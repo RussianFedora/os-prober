@@ -1,0 +1,13 @@
+diff -urN os-prober-1.57.orig/os-probes/mounted/common/90linux-distro os-prober-1.57/os-probes/mounted/common/90linux-distro
+--- os-prober-1.57.orig/os-probes/mounted/common/90linux-distro	2013-04-16 18:59:55.203935774 +0400
++++ os-prober-1.57/os-probes/mounted/common/90linux-distro	2013-04-16 19:00:59.193140694 +0400
+@@ -41,6 +41,9 @@
+ 	elif [ -e "$dir/etc/asplinux-release" ]; then
+ 		short="ASPLinux"
+ 		long="$(cat "$dir/etc/asplinux-release")"
++        elif [ -e "$dir/etc/rfremix-release" ]; then
++                short="RFRemix"
++                long="$(cat "$dir/etc/rfremix-release")"
+ 	elif [ -e "$dir/etc/lvr-release" ]; then
+ 		short="LvR"
+ 		long="$(cat "$dir/etc/lvr-release")"
