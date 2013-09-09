@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.58
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -24,7 +24,10 @@ Patch8:         os-prober-bootpart-name-fix.patch
 Patch9:         os-prober-mounted-partitions-fix.patch
 Patch10:        os-prober-factor-out-logger.patch
 # To be sent upstream
-Patch11:        os-prober-factored-logger-efi-fix.patch
+# Disabled until grub2-mkconfig is updated to match. See Kamil Paral's
+# testing in https://bugzilla.redhat.com/show_bug.cgi?id=873207
+# - adamw 2013/07
+#Patch11:        os-prober-factored-logger-efi-fix.patch
 # RFRemix
 Patch20:	os-prober-1.57-detect-rfremix.patch
 
@@ -49,7 +52,7 @@ distributions can be added easily.
 %patch8 -p1 -b .bootpart-name-fix
 %patch9 -p1 -b .mounted-partitions-fix
 %patch10 -p1 -b .factor-out-logger
-%patch11 -p1 -b .factor-out-logger-efi-fix
+#%patch11 -p1 -b .factor-out-logger-efi-fix
 %patch20 -p1 -b .detect-rfremix
 
 find -type f -exec sed -i -e 's|usr/lib|usr/libexec|g' {} \;
@@ -101,6 +104,9 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Tue Jul 02 2013 Adam Williamson <awilliam@redhat.com> - 1.58-3.R
+- revert factored-logger-efi-fix.patch until grub2 is updated to match
+
 * Tue Jun 18 2013 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-2.R
 - Fix a bug in EFI detection because of redirecting result output
 
