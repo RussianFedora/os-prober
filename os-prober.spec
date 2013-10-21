@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.58
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -104,6 +104,9 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Mon Oct 21 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 1.58-4.R
+- just rebuilt
+
 * Tue Jul 02 2013 Adam Williamson <awilliam@redhat.com> - 1.58-3.R
 - revert factored-logger-efi-fix.patch until grub2 is updated to match
 
