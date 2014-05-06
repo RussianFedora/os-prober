@@ -1,6 +1,8 @@
---- os-prober-1.56-orig-1/common.sh	2013-01-10 08:33:45.200766262 -0500
-+++ os-prober-1.56-orig-1/common.sh	2013-01-10 08:34:43.644058934 -0500
-@@ -127,6 +127,7 @@ 
+Index: os-prober-1.58/common.sh
+===================================================================
+--- os-prober-1.58.orig/common.sh
++++ os-prober-1.58/common.sh
+@@ -127,6 +127,7 @@ parse_proc_mounts () {
  	done
  }
  
@@ -8,7 +10,7 @@
  parsefstab () {
  	while read -r line; do
  		case "$line" in
-@@ -137,12 +138,22 @@ 
+@@ -137,12 +138,22 @@ parsefstab () {
  				set -f
  				set -- $line
  				set +f
@@ -32,9 +34,11 @@
  unescape_mount () {
  	printf %s "$1" | \
  		sed 's/\\011/	/g; s/\\012/\n/g; s/\\040/ /g; s/\\134/\\/g'
---- os-prober-1.56-orig-1/linux-boot-prober	2012-03-27 10:39:42.000000000 -0400
-+++ os-prober-1.56-orig-1/linux-boot-prober	2013-01-10 08:34:43.644058934 -0500
-@@ -5,16 +5,143 @@ 
+Index: os-prober-1.58/linux-boot-prober
+===================================================================
+--- os-prober-1.58.orig/linux-boot-prober
++++ os-prober-1.58/linux-boot-prober
+@@ -5,16 +5,143 @@ set -e
  
  newns "$@"
  require_tmpdir
@@ -180,7 +184,7 @@
  if ! mapped="$(mapdevfs "$partition")"; then
  	log "Device '$partition' does not exist; skipping"
  	continue
-@@ -22,8 +149,8 @@ 
+@@ -22,8 +149,8 @@ fi
  
  if ! grep -q "^$mapped " "$OS_PROBER_TMP/mounted-map"; then
  	for test in /usr/lib/linux-boot-probes/*; do
@@ -190,9 +194,11 @@
  			if $test "$partition"; then
  				debug "linux detected by $test"
  				break
---- os-prober-1.56-orig-1/linux-boot-probes/mounted/common/40grub2	2012-09-17 13:32:52.000000000 -0400
-+++ os-prober-1.56-orig-1/linux-boot-probes/mounted/common/40grub2	2013-01-10 08:34:43.644058934 -0500
-@@ -2,17 +2,27 @@ 
+Index: os-prober-1.58/linux-boot-probes/mounted/common/40grub2
+===================================================================
+--- os-prober-1.58.orig/linux-boot-probes/mounted/common/40grub2
++++ os-prober-1.58/linux-boot-probes/mounted/common/40grub2
+@@ -2,17 +2,30 @@
  . /usr/share/os-prober/common.sh
  set -e
  
@@ -208,9 +214,12 @@
  found_item=0
  
  entry_result () {
-+	if [ "x$type" = "xbtrfs" -a "$rootsv" = "$bootsv" ]; then
++	if [ "x$type" = "xbtrfs" -a "$partition" = "$bootpart" ]; then
 +		# trim off the leading subvol
 +		kernelfile=$(echo "$kernel" | cut -d '/' -f 2- | cut -d '/' -f 2-)
++		if [ "x$rootsv" != "x$bootsv" ]; then
++		   kernelfile="/boot/$kernelfile"
++		fi
 +	else
 +		kernelfile=$kernel
 +	fi
@@ -221,9 +230,11 @@
  		result "$rootpart:$bootpart:$title:$kernel:$initrd:$parameters"
  		found_item=1
  	fi
---- os-prober-1.56-orig-1/os-prober	2013-01-10 08:33:45.193766227 -0500
-+++ os-prober-1.56-orig-1/os-prober	2013-01-10 08:34:43.645058939 -0500
-@@ -64,9 +64,12 @@ 
+Index: os-prober-1.58/os-prober
+===================================================================
+--- os-prober-1.58.orig/os-prober
++++ os-prober-1.58/os-prober
+@@ -64,9 +64,12 @@ partitions () {
  
  	# Also detect OSes on LVM volumes (assumes LVM is active)
  	if type lvs >/dev/null 2>&1; then
@@ -237,7 +248,7 @@
  }
  
  parse_proc_swaps () {
-@@ -124,6 +127,8 @@ 
+@@ -124,6 +127,8 @@ if [ -f /proc/mdstat ] ; then
  	grep "^md" /proc/mdstat | cut -d: -f2- | parse_proc_mdstat >"$OS_PROBER_TMP/raided-map" || true
  fi
  
@@ -246,7 +257,7 @@
  for partition in $(partitions); do
  	if ! mapped="$(mapdevfs "$partition")"; then
  		log "Device '$partition' does not exist; skipping"
-@@ -142,7 +147,26 @@ 
+@@ -142,7 +147,26 @@ for partition in $(partitions); do
  		continue
  	fi
  
@@ -274,9 +285,11 @@
  		for test in /usr/lib/os-probes/*; do
  			if [ -f "$test" ] && [ -x "$test" ]; then
  				debug "running $test on $partition"
---- os-prober-1.56-orig-1/os-probes/common/50mounted-tests	2012-09-17 11:08:12.000000000 -0400
-+++ os-prober-1.56-orig-1/os-probes/common/50mounted-tests	2013-01-10 08:34:43.645058939 -0500
-@@ -1,20 +1,36 @@ 
+Index: os-prober-1.58/os-probes/common/50mounted-tests
+===================================================================
+--- os-prober-1.58.orig/os-probes/common/50mounted-tests
++++ os-prober-1.58/os-probes/common/50mounted-tests
+@@ -1,20 +1,36 @@
  #!/bin/sh
  # Sub-tests that require a mounted partition.
  set -e
@@ -318,7 +331,7 @@
  elif [ "$types" = ntfs ]; then
  	if type ntfs-3g >/dev/null 2>&1; then
  		types='ntfs-3g ntfs'
-@@ -23,7 +39,7 @@ 
+@@ -23,7 +39,7 @@ elif [ -z "$types" ]; then
  	if type cryptsetup >/dev/null 2>&1 && \
  	   cryptsetup luksDump "$partition" >/dev/null 2>&1; then
  		debug "$1 is a LUKS partition; skipping"
@@ -327,7 +340,7 @@
  	fi
  	for type in $(grep -v nodev /proc/filesystems); do
  		# hfsplus filesystems are mountable as hfs. Try hfs last so
-@@ -46,6 +62,76 @@ 
+@@ -46,6 +62,76 @@ if [ ! -d "$tmpmnt" ]; then
  fi
  
  mounted=
@@ -404,9 +417,11 @@
  if type grub-mount >/dev/null 2>&1 && \
     type grub-probe >/dev/null 2>&1 && \
     grub-mount "$partition" "$tmpmnt" 2>/dev/null; then
---- os-prober-1.56-orig-1/os-probes/mounted/common/90linux-distro	2013-01-10 08:33:45.197766247 -0500
-+++ os-prober-1.56-orig-1/os-probes/mounted/common/90linux-distro	2013-01-10 08:34:43.645058939 -0500
-@@ -7,6 +7,8 @@ 
+Index: os-prober-1.58/os-probes/mounted/common/90linux-distro
+===================================================================
+--- os-prober-1.58.orig/os-probes/mounted/common/90linux-distro
++++ os-prober-1.58/os-probes/mounted/common/90linux-distro
+@@ -7,6 +7,8 @@ set -e
  partition="$1"
  dir="$2"
  type="$3"
@@ -415,7 +430,7 @@
  
  # This test is inaccurate, but given separate / and /boot partitions and the
  # fact that only some architectures have ld-linux.so, I can't see anything
-@@ -131,7 +133,11 @@ 
+@@ -131,7 +133,11 @@ if (ls "$dir"/lib*/ld*.so*  && [ -d "$di
  	fi
  	
          label="$(count_next_label "$short")"
@@ -428,9 +443,11 @@
  	exit 0
  else
  	exit 1
---- os-prober-1.56-orig-1/README.btrfs	1969-12-31 19:00:00.000000000 -0500
-+++ os-prober-1.56-orig-1/README.btrfs	2013-01-10 08:34:43.645058939 -0500
-@@ -0,0 +1,15 @@ 
+Index: os-prober-1.58/README.btrfs
+===================================================================
+--- /dev/null
++++ os-prober-1.58/README.btrfs
+@@ -0,0 +1,15 @@
 +BTRFS is a new filesystem which combines the filesystem with logical volume
 +management (subvolumes).  For further information, see:
 +      https://btrfs.wiki.kernel.org/index.php/Main_Page

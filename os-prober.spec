@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.58
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -104,6 +104,10 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Thu Apr 24 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-5.R
+- Fixed bug #982009: fix btrfs support
+- Suppress some more debug messages when debug messages are disabled
+
 * Mon Oct 21 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 1.58-4.R
 - just rebuilt
 
