@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.58
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -105,6 +105,9 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Thu Jun 26 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 1.58-7.R
+- rebuilt
+
 * Tue May 06 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-6.R
 - Fix separate /usr partitions for usrmove distros (bug #1044760)
 - Fix umount error when directory is temporarily busy (bug #903906)
