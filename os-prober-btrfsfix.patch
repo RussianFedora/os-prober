@@ -244,7 +244,7 @@ Index: os-prober-1.58/os-prober
  	fi
 +
 +	# now lets make sure we got all of the btrfs partitions and disks
-+	blkid | grep btrfs | cut -d ':' -f 1
++	blkid | grep 'TYPE="btrfs"' | cut -d ':' -f 1
  }
  
  parse_proc_swaps () {
@@ -430,7 +430,7 @@ Index: os-prober-1.58/os-probes/mounted/common/90linux-distro
  
  # This test is inaccurate, but given separate / and /boot partitions and the
  # fact that only some architectures have ld-linux.so, I can't see anything
-@@ -131,7 +133,11 @@ if (ls "$dir"/lib*/ld*.so*  && [ -d "$di
+@@ -135,7 +137,11 @@ if [ -L "$dir"/lib ] || (ls "$dir"/lib*/
  	fi
  	
          label="$(count_next_label "$short")"

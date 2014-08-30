@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.58
-Release:        7%{?dist}
+Release:        9%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -105,6 +105,9 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Sat Aug 30 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 1.58-9.R
+- Fix bug in counting LVM LVs which their name contains 'btrfs' as btrfs volumes
+
 * Thu Jun 26 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 1.58-7.R
 - rebuilt
 
