@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.58
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -23,10 +23,7 @@ Patch8:         os-prober-bootpart-name-fix.patch
 Patch9:         os-prober-mounted-partitions-fix.patch
 Patch10:        os-prober-factor-out-logger.patch
 # To be sent upstream
-# Disabled until grub2-mkconfig is updated to match. See Kamil Paral's
-# testing in https://bugzilla.redhat.com/show_bug.cgi?id=873207
-# - adamw 2013/07
-#Patch11:        os-prober-factored-logger-efi-fix.patch
+Patch11:        os-prober-factored-logger-efi-fix.patch
 Patch12:        os-prober-umount-fix.patch
 # RFRemix
 Patch20:	os-prober-1.57-detect-rfremix.patch
@@ -52,7 +49,7 @@ distributions can be added easily.
 %patch8 -p1 -b .bootpart-name-fix
 %patch9 -p1 -b .mounted-partitions-fix
 %patch10 -p1 -b .factor-out-logger
-#patch11 -p1 -b .factor-out-logger-efi-fix
+%patch11 -p1 -b .factor-out-logger-efi-fix
 %patch12 -p1 -b .umount-fix
 %patch20 -p1 -b .detect-rfremix
 
@@ -105,6 +102,10 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Mon Sep 08 2014 Peter Jones <pjones@redhat.com> - 1.58-10.R
+- Make os-prober output include partitions for UEFI chainloads.
+  Resolves: rhbz#873207
+
 * Sat Aug 30 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 1.58-9.R
 - Fix bug in counting LVM LVs which their name contains 'btrfs' as btrfs volumes
 
