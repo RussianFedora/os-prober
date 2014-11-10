@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.58
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -25,6 +25,7 @@ Patch10:        os-prober-factor-out-logger.patch
 # To be sent upstream
 Patch11:        os-prober-factored-logger-efi-fix.patch
 Patch12:        os-prober-umount-fix.patch
+Patch13:        os-prober-grub2-parsefix.patch
 # RFRemix
 Patch20:	os-prober-1.57-detect-rfremix.patch
 
@@ -51,6 +52,7 @@ distributions can be added easily.
 %patch10 -p1 -b .factor-out-logger
 %patch11 -p1 -b .factor-out-logger-efi-fix
 %patch12 -p1 -b .umount-fix
+%patch13 -p1 -b .grub2-parsefix
 %patch20 -p1 -b .detect-rfremix
 
 find -type f -exec sed -i -e 's|usr/lib|usr/libexec|g' {} \;
@@ -102,6 +104,9 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Sat Oct 25 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-11.R
+- Fix parsing grub2's initrd/linux variations, rhbz #1108344
+
 * Mon Sep 08 2014 Peter Jones <pjones@redhat.com> - 1.58-10.R
 - Make os-prober output include partitions for UEFI chainloads.
   Resolves: rhbz#873207
