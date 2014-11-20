@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.58
-Release:        3%{?dist}
+Release:        8%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -19,7 +19,6 @@ Patch4:         os-prober-usrmovefix.patch
 Patch5:         os-prober-remove-basename.patch
 Patch6:         os-prober-disable-debug-test.patch
 Patch7:         os-prober-btrfsfix.patch
-# To be sent upstream
 Patch8:         os-prober-bootpart-name-fix.patch
 Patch9:         os-prober-mounted-partitions-fix.patch
 Patch10:        os-prober-factor-out-logger.patch
@@ -28,7 +27,7 @@ Patch10:        os-prober-factor-out-logger.patch
 # testing in https://bugzilla.redhat.com/show_bug.cgi?id=873207
 # - adamw 2013/07
 #Patch11:        os-prober-factored-logger-efi-fix.patch
-# RFRemix
+Patch12:        os-prober-umount-fix.patch
 Patch20:	os-prober-1.57-detect-rfremix.patch
 
 Requires:       udev coreutils util-linux
@@ -52,7 +51,8 @@ distributions can be added easily.
 %patch8 -p1 -b .bootpart-name-fix
 %patch9 -p1 -b .mounted-partitions-fix
 %patch10 -p1 -b .factor-out-logger
-#%patch11 -p1 -b .factor-out-logger-efi-fix
+#patch11 -p1 -b .factor-out-logger-efi-fix
+%patch12 -p1 -b .umount-fix
 %patch20 -p1 -b .detect-rfremix
 
 find -type f -exec sed -i -e 's|usr/lib|usr/libexec|g' {} \;
@@ -104,6 +104,23 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Sun Jul 06 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-8.R
+- Fix bug in counting LVM LVs which their name contains 'btrfs' as btrfs volumes
+
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.58-7.R
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
+* Tue May 06 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-6.R
+- Fix separate /usr partitions for usrmove distros (bug #1044760)
+- Fix umount error when directory is temporarily busy (bug #903906)
+
+* Thu Apr 24 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-5.R
+- Fixed bug #982009: fix btrfs support
+- Suppress some more debug messages when debug messages are disabled
+
+* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.58-4.R
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
 * Tue Jul 02 2013 Adam Williamson <awilliam@redhat.com> - 1.58-3.R
 - revert factored-logger-efi-fix.patch until grub2 is updated to match
 
