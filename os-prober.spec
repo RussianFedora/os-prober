@@ -1,13 +1,13 @@
 Name:           os-prober
-Version:        1.58
-Release:        11%{?dist}
+Version:        1.65
+Release:        2%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
 # For more information about licensing, see copyright file.
 License:        GPLv2+ and GPL+
 URL:            http://kitenet.net/~joey/code/os-prober/
-Source0:        http://ftp.de.debian.org/debian/pool/main/o/os-prober/%{name}_%{version}.tar.gz
+Source0:        http://ftp.de.debian.org/debian/pool/main/o/os-prober/%{name}_%{version}.tar.xz
 # move newns binary outside of os-prober subdirectory, so that debuginfo
 # can be automatically generated for it
 Patch0:         os-prober-newnsdirfix.patch
@@ -26,6 +26,8 @@ Patch10:        os-prober-factor-out-logger.patch
 Patch11:        os-prober-factored-logger-efi-fix.patch
 Patch12:        os-prober-umount-fix.patch
 Patch13:        os-prober-grub2-parsefix.patch
+Patch14:        os-prober-grepfix.patch
+
 # RFRemix
 Patch20:	os-prober-1.57-detect-rfremix.patch
 
@@ -38,7 +40,7 @@ in a generic machine-readable format. Support for new OSes and Linux
 distributions can be added easily. 
 
 %prep
-%setup -q
+%setup -q -n os-prober
 %patch0 -p1 -b .newnsdirfix
 %patch1 -p1 -b .macosxdummyfix
 %patch2 -p1 -b .mdraidfix
@@ -53,7 +55,8 @@ distributions can be added easily.
 %patch11 -p1 -b .factor-out-logger-efi-fix
 %patch12 -p1 -b .umount-fix
 %patch13 -p1 -b .grub2-parsefix
-%patch20 -p1 -b .detect-rfremix
+%patch14 -p1 -b .grepfix
+%patch20 -p1 -b .rfremix
 
 find -type f -exec sed -i -e 's|usr/lib|usr/libexec|g' {} \;
 sed -i -e 's|grub-probe|grub2-probe|g' os-probes/common/50mounted-tests \
@@ -104,41 +107,52 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
-* Sat Oct 25 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-11.R
+* Thu Mar  5 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-2.R
+- apply patch to detect RFRemix
+
+* Tue Dec 23 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.65-2
+- Fix using grep for searching binary files, fixes #1172405. Thanks Paul Eggert
+  for initial patch fixing grep usage in 83haiku
+
+* Sun Dec 07 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.65-1
+- Using latest upstream version tarball to be consistent with upstream
+  versioning
+
+* Sat Oct 25 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-11
 - Fix parsing grub2's initrd/linux variations, rhbz #1108344
 
-* Mon Sep 08 2014 Peter Jones <pjones@redhat.com> - 1.58-10.R
+* Mon Sep 08 2014 Peter Jones <pjones@redhat.com> - 1.58-10
 - Make os-prober output include partitions for UEFI chainloads.
   Resolves: rhbz#873207
 
-* Sat Aug 30 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 1.58-9.R
+* Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.58-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
+* Sun Jul 06 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-8
 - Fix bug in counting LVM LVs which their name contains 'btrfs' as btrfs volumes
 
-* Thu Jun 26 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 1.58-7.R
-- rebuilt
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.58-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
-* Tue May 06 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-6.R
+* Tue May 06 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-6
 - Fix separate /usr partitions for usrmove distros (bug #1044760)
 - Fix umount error when directory is temporarily busy (bug #903906)
 
-* Thu Apr 24 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-5.R
+* Thu Apr 24 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-5
 - Fixed bug #982009: fix btrfs support
 - Suppress some more debug messages when debug messages are disabled
 
-* Mon Oct 21 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 1.58-4.R
-- just rebuilt
+* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.58-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
-* Tue Jul 02 2013 Adam Williamson <awilliam@redhat.com> - 1.58-3.R
+* Tue Jul 02 2013 Adam Williamson <awilliam@redhat.com> - 1.58-3
 - revert factored-logger-efi-fix.patch until grub2 is updated to match
 
-* Tue Jun 18 2013 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-2.R
+* Tue Jun 18 2013 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-2
 - Fix a bug in EFI detection because of redirecting result output
 
-* Tue May 07 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 1.58-1.R
-- update to 1.58
-
-* Tue Apr 16 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 1.57-2.R
-- detect RFRemix
+* Sun May 05 2013 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.58-1
+- Update to upstream version 1.58, with UEFI support
 
 * Sat Feb 02 2013 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.57-2
 - Fix a bug in recent btrfs patch when an extended partition is examined. 
