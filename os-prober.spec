@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.65
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -107,6 +107,9 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Tue Tue 13 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-3.R
+- bump release to sync with upstream
+
 * Thu Mar  5 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-2.R
 - apply patch to detect RFRemix
 
