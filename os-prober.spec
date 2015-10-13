@@ -107,7 +107,7 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
-* Tue Tue 13 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-3.R
+* Tue Oct 13 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-3.R
 - bump release to sync with upstream
 
 * Thu Mar  5 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-2.R
