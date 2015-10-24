@@ -1,6 +1,6 @@
 Name:           os-prober
-Version:        1.65
-Release:        3%{?dist}
+Version:        1.68
+Release:        1%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -27,6 +27,7 @@ Patch11:        os-prober-factored-logger-efi-fix.patch
 Patch12:        os-prober-umount-fix.patch
 Patch13:        os-prober-grub2-parsefix.patch
 Patch14:        os-prober-grepfix.patch
+Patch15:        os-prober-gentoo-fix.patch
 
 # RFRemix
 Patch20:	os-prober-1.57-detect-rfremix.patch
@@ -56,6 +57,7 @@ distributions can be added easily.
 %patch12 -p1 -b .umount-fix
 %patch13 -p1 -b .grub2-parsefix
 %patch14 -p1 -b .grepfix
+%patch15 -p1 -b .gentoofix
 %patch20 -p1 -b .rfremix
 
 find -type f -exec sed -i -e 's|usr/lib|usr/libexec|g' {} \;
@@ -107,6 +109,10 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Tue Oct 20 2015 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.68-1.R
+- Update to upstream version 1.68, bug #1267779
+- Support a case where a kernel named vmlinuz/x is used under Gentoo, bug #1223237
+
 * Tue Oct 13 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-3.R
 - bump release to sync with upstream
 

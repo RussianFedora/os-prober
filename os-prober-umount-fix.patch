@@ -1,8 +1,8 @@
-Index: os-prober-1.58/common.sh
+Index: os-prober/common.sh
 ===================================================================
---- os-prober-1.58.orig/common.sh
-+++ os-prober-1.58/common.sh
-@@ -313,3 +313,13 @@ linux_mount_boot () {
+--- os-prober.orig/common.sh
++++ os-prober/common.sh
+@@ -336,3 +336,13 @@ linux_mount_boot () {
  
  	mountboot="$bootpart $mounted"
  }
