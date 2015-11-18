@@ -1,5 +1,5 @@
 Name:           os-prober
-Version:        1.68
+Version:        1.70
 Release:        1%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
@@ -41,7 +41,7 @@ in a generic machine-readable format. Support for new OSes and Linux
 distributions can be added easily. 
 
 %prep
-%setup -q -n os-prober
+%setup -q
 %patch0 -p1 -b .newnsdirfix
 %patch1 -p1 -b .macosxdummyfix
 %patch2 -p1 -b .mdraidfix
@@ -109,6 +109,13 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Fri Nov 13 2015 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.70-1.R
+- Update to upstream version 1.70, fixes #1275641
+- Fix bug #1236358 - os-prober duplicates grub entries for read/write btrfs
+  subvolumes, thanks to Helmut Horvath
+- Fix bug #1236649 - os-prober does not detect os on btrfs partition without
+  any subvolume
+
 * Tue Oct 20 2015 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.68-1.R
 - Update to upstream version 1.68, bug #1267779
 - Support a case where a kernel named vmlinuz/x is used under Gentoo, bug #1223237
