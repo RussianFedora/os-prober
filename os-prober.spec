@@ -1,5 +1,5 @@
 Name:           os-prober
-Version:        1.70
+Version:        1.71
 Release:        1%{?dist}
 Summary:        Probes disks on the system for installed operating systems
 
@@ -30,7 +30,7 @@ Patch14:        os-prober-grepfix.patch
 Patch15:        os-prober-gentoo-fix.patch
 
 # RFRemix
-Patch20:	os-prober-1.57-detect-rfremix.patch
+Patch20:        os-prober-1.57-detect-rfremix.patch
 
 Requires:       udev coreutils util-linux
 Requires:       grep /bin/sed /sbin/modprobe
@@ -41,24 +41,7 @@ in a generic machine-readable format. Support for new OSes and Linux
 distributions can be added easily. 
 
 %prep
-%setup -q
-%patch0 -p1 -b .newnsdirfix
-%patch1 -p1 -b .macosxdummyfix
-%patch2 -p1 -b .mdraidfix
-%patch3 -p1 -b .yaboot-parsefix
-%patch4 -p1
-%patch5 -p1 -b .remove-basename
-%patch6 -p1 -b .disable-debug-test
-%patch7 -p1
-%patch8 -p1 -b .bootpart-name-fix
-%patch9 -p1 -b .mounted-partitions-fix
-%patch10 -p1 -b .factor-out-logger
-%patch11 -p1 -b .factor-out-logger-efi-fix
-%patch12 -p1 -b .umount-fix
-%patch13 -p1 -b .grub2-parsefix
-%patch14 -p1 -b .grepfix
-%patch15 -p1 -b .gentoofix
-%patch20 -p1 -b .rfremix
+%autosetup -p1
 
 find -type f -exec sed -i -e 's|usr/lib|usr/libexec|g' {} \;
 sed -i -e 's|grub-probe|grub2-probe|g' os-probes/common/50mounted-tests \
@@ -109,22 +92,32 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
-* Fri Nov 13 2015 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.70-1.R
+* Wed Mar 16 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 1.71-1.R
+- apply patch to detect RFRemix
+
+* Fri Mar 04 2016 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.71-1
+- Update to upstream version 1.71
+- Use git based autosetup for applying patches
+
+* Mon Feb 15 2016 Peter Jones <pjones@redhat.com> - 1.70-3
+- Don't keep backups with 'patch -b'; they wind up in the ouput package.
+
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.70-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
+* Fri Nov 13 2015 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.70-1
 - Update to upstream version 1.70, fixes #1275641
 - Fix bug #1236358 - os-prober duplicates grub entries for read/write btrfs
   subvolumes, thanks to Helmut Horvath
 - Fix bug #1236649 - os-prober does not detect os on btrfs partition without
   any subvolume
 
-* Tue Oct 20 2015 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.68-1.R
+* Tue Oct 20 2015 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.68-1
 - Update to upstream version 1.68, bug #1267779
 - Support a case where a kernel named vmlinuz/x is used under Gentoo, bug #1223237
 
-* Tue Oct 13 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-3.R
-- bump release to sync with upstream
-
-* Thu Mar  5 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 1.65-2.R
-- apply patch to detect RFRemix
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.65-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
 * Tue Dec 23 2014 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.65-2
 - Fix using grep for searching binary files, fixes #1172405. Thanks Paul Eggert
