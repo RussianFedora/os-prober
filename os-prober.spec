@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.71
-Release:        2%{?dist}
+Release:        2%{?dist}.R
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
