@@ -1,39 +1,33 @@
 Name:           os-prober
-Version:        1.71
-Release:        2%{?dist}.R
+Version:        1.74
+Release:        1%{?dist}.R
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
 # For more information about licensing, see copyright file.
 License:        GPLv2+ and GPL+
 URL:            http://kitenet.net/~joey/code/os-prober/
-Source0:        http://ftp.de.debian.org/debian/pool/main/o/os-prober/%{name}_%{version}.tar.xz
-# move newns binary outside of os-prober subdirectory, so that debuginfo
-# can be automatically generated for it
-Patch0:         os-prober-newnsdirfix.patch
-Patch1:         os-prober-no-dummy-mach-kernel.patch
+Source0:        http://ftp.us.debian.org/debian/pool/main/o/os-prober/%{name}_%{version}.tar.xz
+Patch0:         os-prober-no-dummy-mach-kernel.patch
 # Sent upstream
-Patch2:         os-prober-mdraidfix.patch
-Patch3:         os-prober-yaboot-parsefix.patch
-Patch4:         os-prober-usrmovefix.patch
-Patch5:         os-prober-remove-basename.patch
-Patch6:         os-prober-disable-debug-test.patch
-Patch7:         os-prober-btrfsfix.patch
-Patch8:         os-prober-bootpart-name-fix.patch
-Patch9:         os-prober-mounted-partitions-fix.patch
-Patch10:        os-prober-factor-out-logger.patch
+Patch1:         os-prober-mdraidfix.patch
+Patch2:         os-prober-btrfsfix.patch
+Patch3:         os-prober-bootpart-name-fix.patch
+Patch4:         os-prober-mounted-partitions-fix.patch
+Patch5:         os-prober-factor-out-logger.patch
 # To be sent upstream
-Patch11:        os-prober-factored-logger-efi-fix.patch
-Patch12:        os-prober-umount-fix.patch
-Patch13:        os-prober-grub2-parsefix.patch
-Patch14:        os-prober-grepfix.patch
-Patch15:        os-prober-gentoo-fix.patch
+Patch6:         os-prober-factored-logger-efi-fix.patch
+Patch7:         os-prober-umount-fix.patch
+Patch8:         os-prober-grub2-parsefix.patch
+Patch9:         os-prober-grepfix.patch
+Patch10:        os-prober-gentoo-fix.patch
 
 # RFRemix
 Patch20:        os-prober-1.57-detect-rfremix.patch
 
 Requires:       udev coreutils util-linux
 Requires:       grep /bin/sed /sbin/modprobe
+Requires:       device-mapper
 
 %description
 This package detects other OSes available on a system and outputs the results
@@ -41,14 +35,14 @@ in a generic machine-readable format. Support for new OSes and Linux
 distributions can be added easily. 
 
 %prep
-%autosetup -p1
+%autosetup -n %{name} -p1
 
 find -type f -exec sed -i -e 's|usr/lib|usr/libexec|g' {} \;
 sed -i -e 's|grub-probe|grub2-probe|g' os-probes/common/50mounted-tests \
      linux-boot-probes/common/50mounted-tests
 
 %build
-make %{?_smp_mflags} CFLAGS="%{optflags}"
+%make_build CFLAGS="%{optflags}"
 
 %install
 install -m 0755 -d %{buildroot}%{_bindir}
@@ -56,6 +50,7 @@ install -m 0755 -d %{buildroot}%{_var}/lib/%{name}
 
 install -m 0755 -p os-prober linux-boot-prober %{buildroot}%{_bindir}
 install -m 0755 -Dp newns %{buildroot}%{_libexecdir}/newns
+install -m 0755 -Dp newns %{buildroot}%{_libexecdir}/os-prober/newns
 install -m 0644 -Dp common.sh %{buildroot}%{_datadir}/%{name}/common.sh
 
 %ifarch m68k
@@ -85,13 +80,21 @@ if [ "$ARCH" = x86 ]; then
 fi
 
 %files
-%doc README TODO debian/copyright debian/changelog
+%doc README TODO debian/changelog
+%license debian/copyright
 %{_bindir}/*
 %{_libexecdir}/*
 %{_datadir}/%{name}
 %{_var}/lib/%{name}
 
 %changelog
+* Mon Mar 27 2017 Neal Gompa <ngompa13@gmail.com> - 1.74-1.R
+- Update to upstream version 1.74
+- Drop merged patches
+- Rediff remaining patches
+- Move newns to /usr/libexec/os-prober (debuginfo generation works)
+- Mark copyright file as license file
+
 * Thu Mar  9 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 1.71-2.R
 - bump release to rebuild
 
