@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.74
-Release:        1%{?dist}.R
+Release:        3%{?dist}.R
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -88,6 +88,9 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Tue Sep  5 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 1.74-3.R
+- bump release to rebuild
+
 * Mon Mar 27 2017 Neal Gompa <ngompa13@gmail.com> - 1.74-1.R
 - Update to upstream version 1.74
 - Drop merged patches
