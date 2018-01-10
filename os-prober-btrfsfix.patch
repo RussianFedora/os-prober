@@ -379,7 +379,7 @@ index 2951ef9..e33eb82 100755
 +		mpoint="$tmpmnt"
 +	    fi
 +
-+	    test="/usr/libexec/os-probes/mounted/90linux-distro"
++	    test="/usr/lib/os-probes/mounted/90linux-distro"
 +	    if [ -f "$test" ] && [ -x "$test" ]; then
 +		debug "running subtest $test"
 +		if "$test" "$partition" "$mpoint" btrfs "UUID=$UUID"; then

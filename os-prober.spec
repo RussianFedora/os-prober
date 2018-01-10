@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.74
-Release:        3%{?dist}.R
+Release:        4%{?dist}.R
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -88,6 +88,9 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Fri Dec 29 2017 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.74-4.R
+- Fix a path problem in btrfsfix.patch, fixes #1529616
+
 * Tue Sep  5 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 1.74-3.R
 - bump release to rebuild
 
