@@ -1,6 +1,6 @@
 Name:           os-prober
 Version:        1.74
-Release:        4%{?dist}.R
+Release:        6%{?dist}.R
 Summary:        Probes disks on the system for installed operating systems
 
 Group:          System Environment/Base
@@ -28,6 +28,8 @@ Patch20:        os-prober-1.57-detect-rfremix.patch
 Requires:       udev coreutils util-linux
 Requires:       grep /bin/sed /sbin/modprobe
 Requires:       device-mapper
+
+BuildRequires:  gcc git
 
 %description
 This package detects other OSes available on a system and outputs the results
@@ -88,6 +90,12 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
+* Sun Feb 18 2018 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.74-6.R
+- Add gcc build dependency
+
+* Thu Feb 08 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.74-5.R
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
 * Fri Dec 29 2017 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.74-4.R
 - Fix a path problem in btrfsfix.patch, fixes #1529616
 
