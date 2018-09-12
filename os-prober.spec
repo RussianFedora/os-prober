@@ -90,7 +90,7 @@ fi
 %{_var}/lib/%{name}
 
 %changelog
-* * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.74-7.R
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.74-7.R
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
 * Sun Feb 18 2018 Hedayat Vatankhah <hedayat.fwd+rpmchlog@gmail.com> - 1.74-6.R
